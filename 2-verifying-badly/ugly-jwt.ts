@@ -4,9 +4,9 @@ import { jwt as goodJwt } from "./good-jwt"
 
 // const [goodHeader, goodPayload, goodSignature] = goodJwt.split('.');
 
-const badPayload = toBase64(JSON.stringify({
+const badPayload = {
     username: 'dr-evil',
     admin: true
-}));
+};
 
 export const jwt = encodeUnsigned(badPayload)

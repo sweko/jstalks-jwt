@@ -66,24 +66,24 @@ const verify = async (token: string) => {
 
 
 (async () => {
-const verification = await verify(jwt);
+    const verification = await verify(jwt);
 
-let userData = verification.payload;
+    let userData = verification.payload;
 
-if (!verification.success) {
-    if (verification.reason === 'expired') {
-        console.log('You poor expired token, let me be helpful and refresh you');
-        userData = {...verification.payload, exp: Math.floor(Date.now() / 1000) + 60 * 60};
-    } else {
-        throw new Error('Invalid signature');
+    if (!verification.success) {
+        if (verification.reason === 'expired') {
+            console.log('You poor expired token, let me be helpful and refresh you');
+            userData = {...verification.payload, exp: Math.floor(Date.now() / 1000) + 60 * 60};
+        } else {
+            throw new Error('Invalid signature');
+        }
     }
-}
-const adminString = userData.admin 
-    ? 'the user \x1b[31mis\x1b[0m an admin'
-    :  'the user \x1b[32mis not\x1b[0m an admin';
+    const adminString = userData.admin 
+        ? 'the user \x1b[31mis\x1b[0m an admin'
+        :  'the user \x1b[32mis not\x1b[0m an admin';
 
-const additionalData = await getAdditionalData(userData.username);
-const fullProfile = {...userData, ...additionalData};
+    const additionalData = await getAdditionalData(userData.username);
+    const fullProfile = {...userData, ...additionalData};
 
-console.log(`I have successfully verified the user \x1b[33m${fullProfile.fullName}\x1b[0m, and ${adminString}`);
+    console.log(`I have successfully verified the user \x1b[33m${fullProfile.fullName}\x1b[0m, and ${adminString}`);
 })();
